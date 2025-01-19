@@ -10,7 +10,7 @@ class Order extends Model
     /** @use HasFactory<\Database\Factories\OrderFactory> */
     use HasFactory;
 
-    protected $fillable = ['first_name', 'last_name', 'address'];
+    protected $fillable = ['first_name', 'last_name', 'address', 'user_id', 'game_id'];
 
     public function payment_details()
     {
@@ -20,5 +20,15 @@ class Order extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function game()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function library()
+    {
+        return $this->hasOne(Library::class);
     }
 }

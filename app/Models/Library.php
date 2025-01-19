@@ -12,7 +12,7 @@ class Library extends Model
 
     protected $table = 'libraries';
 
-    protected $fillable = ['user_id', 'game_id'];
+    protected $fillable = ['user_id', 'game_id', 'order_id'];
 
     public function user()
     {
@@ -24,4 +24,8 @@ class Library extends Model
         return $this->belongsTo(Game::class);
     }
 
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Developer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,9 @@ class FranchiseFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => $this->faker->word,
+            'description' => $this->faker->sentence,
+            'developer_id' => Developer::factory(),
         ];
     }
 }

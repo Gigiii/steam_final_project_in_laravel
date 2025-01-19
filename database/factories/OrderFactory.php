@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Game;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,11 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'address' => $this->faker->address,
+            'user_id' => User::factory(),
+            'game_id' => Game::factory(),
         ];
     }
 }
