@@ -33,6 +33,7 @@ class User extends Authenticatable implements JWTSubject
         'username',
         'email',
         'password',
+        'role_id',
     ];
 
     /**
@@ -56,4 +57,46 @@ class User extends Authenticatable implements JWTSubject
             'password' => 'hashed',
         ];
     }
+
+    public function library()
+    {
+        return $this->hasMany(Library::class);
+    }
+
+    public function games()
+    {
+        return $this->hasManyThrough(Game::class, Library::class);
+    }
+
+    public function wishlist()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
+
+    public function developer()
+    {
+        return $this->hasOne(Developer::class);
+    }
+
+    public function isDeveloper()
+    {
+        return $this->role->title === 'developer' && $this->developer !== null;
+    }
+
 }

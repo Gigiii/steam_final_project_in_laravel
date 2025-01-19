@@ -16,7 +16,6 @@ return new class extends Migration
     {
         Schema::create('games', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Developer::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Franchise::class)->constrained()->cascadeOnDelete();
             $table->string('title');
             $table->decimal('price', 10, 2);
