@@ -32,9 +32,13 @@ class JWTAuthController extends Controller
             'password' => Hash::make($request->get('password')),
         ]);
 
-        $token = JWTAuth::fromUser($user);
+        $accessToken = JWTAuth::claims(['exp' => now()->addMinutes(15)->timestamp])->fromUser($user);
+        $refreshToken = JWTAuth::claims(['exp' => now()->addDays(7)->timestamp])->fromUser($user);
 
-        return response()->json(compact('user','token'), 201);
+        return response()->json([
+            'access_token' => $accessToken,
+            'refresh_token' => $refreshToken,
+        ]);
     }
 
     // User login
@@ -53,7 +57,15 @@ class JWTAuthController extends Controller
             // // (optional) Attach the role to the token.
             // $token = JWTAuth::claims(['role' => $user->role])->fromUser($user);
 
-            return response()->json(compact('token'));
+            $accessToken = JWTAuth::claims(['exp' => now()->addMinutes(15)->timestamp])->fromUser($user);
+            $refreshToken = JWTAuth::claims(['exp' => now()->addDays(7)->timestamp])->fromUser($user);
+
+            return response()->json([
+                'access_token' => $accessToken,
+                'refresh_token' => $refreshToken,
+                'user' => $user,
+            ]);
+
         } catch (JWTException $e) {
             return response()->json(['error' => 'Could not create token'], 500);
         }
@@ -62,13 +74,6 @@ class JWTAuthController extends Controller
     // Get authenticated user
     public function getUser()
     {
-        // try {
-        //     if (!$user = JWTAuth::parseToken()->authenticate()) {
-        //         return response()->json(['error' => 'User not found'], 404);
-        //     }
-        // } catch (JWTException $e) {
-        //     return response()->json(['error' => 'Invalid token'], 400);
-        // }
 
         try {
             $user = JWTAuth::parseToken()->authenticate();
@@ -80,17 +85,16 @@ class JWTAuthController extends Controller
         return response()->json(compact('user'));
     }
 
-    public function refresh()
+    public function refresh(Request $request)
     {
+        $refreshToken = $request->input('refresh_token');
         try {
-            $token = JWTAuth::parseToken()->refresh();
+            $newAccessToken = JWTAuth::setToken($refreshToken)->refresh();
+            return response()->json(['access_token' => $newAccessToken]);
         } catch (JWTException $e) {
-            return response()->json(['error' => 'Could not refresh token'], 500);
+            return response()->json(['error' => 'Invalid refresh token'], 401);
         }
-
-        return response()->json(compact('token'));
     }
-
 
     // User logout
     public function logout()
