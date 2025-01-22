@@ -99,4 +99,8 @@ class User extends Authenticatable implements JWTSubject
         return $this->role->title === 'developer' && $this->developer !== null;
     }
 
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 }

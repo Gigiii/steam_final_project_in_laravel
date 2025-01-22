@@ -32,8 +32,7 @@ class JWTAuthController extends Controller
             'password' => Hash::make($request->get('password')),
             'role_id' => 1,
         ]);
-
-        $accessToken = JWTAuth::claims(['exp' => now()->addMinutes(15)->timestamp])->fromUser($user);
+        $accessToken = JWTAuth::claims(['role' => $user->role, 'exp' => now()->addMinutes(30)->timestamp])->fromUser($user);
         $refreshToken = JWTAuth::claims(['exp' => now()->addDays(7)->timestamp])->fromUser($user);
 
         return response()->json([
@@ -52,13 +51,9 @@ class JWTAuthController extends Controller
                 return response()->json(['error' => 'Invalid credentials'], 401);
             }
 
-            // Get the authenticated user.
             $user = Auth::user();
 
-            // // (optional) Attach the role to the token.
-            $token = JWTAuth::claims(['role' => $user->role])->fromUser($user);
-
-            $accessToken = JWTAuth::claims(['exp' => now()->addMinutes(15)->timestamp])->fromUser($user);
+            $accessToken = JWTAuth::claims(['role' => $user->role->title, 'exp' => now()->addMinutes(30)->timestamp])->fromUser($user);
             $refreshToken = JWTAuth::claims(['exp' => now()->addDays(7)->timestamp])->fromUser($user);
 
             return response()->json([

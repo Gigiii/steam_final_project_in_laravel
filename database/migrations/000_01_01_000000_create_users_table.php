@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Role::class)->constrained();
             $table->string('username');
+            $table->decimal('balance',10, 2)->default(0);
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();
