@@ -28,4 +28,9 @@ class Library extends Model
     {
         return $this->belongsTo(Order::class);
     }
+
+    public function paymentDetails()
+    {
+        return $this->hasOneThrough(PaymentDetail::class, Order::class);
+    }
 }

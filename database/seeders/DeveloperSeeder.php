@@ -19,7 +19,7 @@ class DeveloperSeeder extends Seeder
     {
         $genres = Genre::all();
         
-        Developer::factory(5)
+        Developer::factory(15)
             ->has(
                 Franchise::factory(rand(1, 2))
                     ->has(
