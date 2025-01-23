@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('title');
             $table->decimal('price', 10, 2);
             $table->decimal('sale_price', 10, 2)->nullable();
+            $table->date('sale_end_date')->nullable();
             $table->string('short_description');
             $table->text('description');
             $table->date('release_date');

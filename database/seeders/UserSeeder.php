@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
     {
         $games = Game::all();
 
-        $users = User::factory(100)->create([
+        $users = User::factory(50)->create([
             'role_id' => 1,
         ]);
 
