@@ -29,7 +29,7 @@ class UserFactory extends Factory
             'email' => $this->faker->unique()->safeEmail,
             'balance' => $this->faker->randomFloat(2,0, 999),
             'password' => static::$password ??= Hash::make('Test123!'),
-            'role_id' => Role::inRandomOrder()->first()->id,
+            'role_id' => Role::first()->id ?? 1,
         ];
     }
 
