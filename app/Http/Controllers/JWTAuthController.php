@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RefreshTokenRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,17 +17,9 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 class JWTAuthController extends Controller
 {
     // User registration
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'username' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-        ]);
-
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
-        }
+        $validated = $request->validated();
 
         $user = User::create([
             'username' => $request->get('username'),
@@ -42,7 +37,7 @@ class JWTAuthController extends Controller
     }
 
     // User login
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
 
@@ -81,7 +76,7 @@ class JWTAuthController extends Controller
         return response()->json(compact('user'));
     }
 
-    public function refresh(Request $request)
+    public function refresh(RefreshTokenRequest $request)
     {
         $refreshToken = $request->input('refresh_token');
         try {
