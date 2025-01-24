@@ -8,6 +8,7 @@ use App\Http\Middleware\JwtMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+// Authentication
 Route::prefix('auth')->group(function () {
     Route::post('register', [JWTAuthController::class, 'register']);
     Route::post('login', [JWTAuthController::class, 'login']);
@@ -19,6 +20,7 @@ Route::prefix('auth')->group(function () {
     });
 });
 
+// Games
 Route::prefix('games')->group(function () {
     Route::get('/', [GameController::class, 'index']);
     Route::get('/{game}', [GameController::class, 'show']);
@@ -30,9 +32,11 @@ Route::prefix('games')->group(function () {
     });
 });
 
+// Images
 Route::prefix('images')->group(function () {
     Route::post('/', [ImageController::class, 'store']);
     Route::get('/by-type', [ImageController::class, 'getImagesByType']);
 });
 
+// Genres
 Route::get('/genres', GenreController::class);

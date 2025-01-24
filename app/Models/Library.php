@@ -29,7 +29,7 @@ class Library extends Model
         return $this->belongsTo(Order::class);
     }
 
-    public function paymentDetails()
+    public function paymentDetail()
     {
         return $this->hasOneThrough(PaymentDetail::class, Order::class);
     }

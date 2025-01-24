@@ -7,18 +7,18 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class GameOnSaleNotification extends Notification
+class WeeklyFranchiseNotification extends Notification
 {
     use Queueable;
 
-    private $games;
+    private $franchise;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($games)
+    public function __construct($franchise)
     {
-        $this->games = $games;
+        $this->franchise = $franchise;
     }
 
     /**
@@ -37,15 +37,20 @@ class GameOnSaleNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         $mailMessage = (new MailMessage)
-        ->subject('Games on Your Wishlist Are On Sale!')
+        ->subject('Weekly Franchise!')
         ->greeting("Hello {$notifiable->username},")
-        ->line('Here are the games from your wishlist that are currently on sale:');
+        ->line('Here is the franchise that we think deserves a spotlight:')
+        ->line("**{$this->franchise->title}**");
 
-        foreach ($this->games as $game) {
-            $mailMessage->line("- **{$game->title}**: Original Price $ {$game->price}, Sale Price $ {$game->sale_price}");
+        foreach ($this->franchise->games as $game) {
+            if ($game->sale_price !== null && $game->sale_price > 0) {
+                $mailMessage->line("- **{$game->title}**: Original Price $ {$game->price}, Sale Price $ {$game->sale_price}");
+            }else{
+                $mailMessage->line("- **{$game->title}**: Price $ {$game->price}");
+            }
         }
 
-        $mailMessage->line('Hurry! Some sales may end soon!');
+        $mailMessage->line("Please give a round of applause to the developer {$this->franchise->developer->name}!");
 
         return $mailMessage;
     }

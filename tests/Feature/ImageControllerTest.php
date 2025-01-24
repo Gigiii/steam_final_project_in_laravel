@@ -54,7 +54,6 @@ class ImageControllerTest extends TestCase
                 ],
             ]);
 
-        // Check that the images were saved to the database
         foreach ($data['images'] as $image) {
             $this->assertDatabaseHas('images', [
                 'url' => $image['url'],
@@ -71,7 +70,7 @@ class ImageControllerTest extends TestCase
                 [
                     'url' => 'https://example.com/image.jpg',
                     'imageable_type' => Game::class,
-                    'imageable_id' => 99999, // Non-existent ID
+                    'imageable_id' => 99999,
                 ],
             ],
         ];
