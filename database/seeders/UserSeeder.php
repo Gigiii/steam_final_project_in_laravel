@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Game;
+use App\Models\Image;
 use App\Models\Library;
 use App\Models\Order;
 use App\Models\PaymentDetail;
@@ -21,14 +22,17 @@ class UserSeeder extends Seeder
     {
         $games = Game::all();
 
-        $users = User::factory(50)->create([
-            'role_id' => 1,
-        ]);
+        $users = User::factory(50)->user()->create();
 
         foreach ($users as $user) {
-            // Assign 5-20 random games to the user's library with orders and payment details
+
+            $user->image()->create([
+                'url' => fake()->imageUrl(),
+            ]);
+
             $libraryGames = $games->random(rand(5, 20));
             foreach ($libraryGames as $game) {
+
 
                 $order = Order::create([
                     'user_id' => $user->id,
@@ -53,7 +57,7 @@ class UserSeeder extends Seeder
                 ]);
             }
 
-            // Assign 3-10 random games to the user's wishlist (excluding library games)
+
             $wishlistGames = $games->whereNotIn('id', $libraryGames->pluck('id'))->random(rand(3, 10));
             foreach ($wishlistGames as $game) {
                 Wishlist::create([
@@ -62,7 +66,7 @@ class UserSeeder extends Seeder
                 ]);
             }
 
-            // Add 1-4 reviews for random games in library
+
             $reviewGames = $libraryGames->random(rand(1, 4)); 
             foreach ($reviewGames as $game) {
                 Review::create([

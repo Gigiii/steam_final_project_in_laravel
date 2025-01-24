@@ -1,5 +1,6 @@
 <?php
 
+use App\Console\Commands\EndGameSales;
 use App\Console\Commands\NotifyUsersOfGameSales;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
@@ -9,3 +10,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote')->hourly();
 
 Schedule::command(NotifyUsersOfGameSales::class)->dailyAt(18);
+Schedule::command(EndGameSales::class)->daily();

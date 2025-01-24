@@ -24,16 +24,16 @@ class DeveloperSeeder extends Seeder
                 Franchise::factory(rand(1, 2))
                     ->has(
                         Game::factory(rand(3, 5))
-                            ->hasAttached($genres->random(rand(5, 8)), ['genreable_type' => Game::class]) // Attach genres to games
+                            ->hasAttached($genres->random(rand(5, 8)), ['genreable_type' => Game::class])
                             ->has(
                                 Image::factory(rand(3, 4))
-                                    ->state(['imageable_type' => Game::class]) // Add images to games
+                                    ->state(['imageable_type' => Game::class])
                             )
                     )
-                    ->hasAttached($genres->random(rand(5, 8)), ['genreable_type' => Franchise::class]) // Attach genres to franchises
+                    ->hasAttached($genres->random(rand(5, 8)), ['genreable_type' => Franchise::class])
                     ->has(
                         Image::factory(rand(2, 3))
-                            ->state(['imageable_type' => Franchise::class]) // Add images to franchises
+                            ->state(['imageable_type' => Franchise::class]) 
                     )
             )
             ->create();

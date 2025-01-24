@@ -20,7 +20,7 @@ class DeveloperFactory extends Factory
         return [
             'name' => $this->faker->company,
             'description' => $this->faker->paragraph,
-            'user_id' => User::factory()->create(['role_id' => 2])->id,
+            'user_id' => User::factory()->developer()->create(),
         ];
     }
 }

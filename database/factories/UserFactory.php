@@ -28,16 +28,26 @@ class UserFactory extends Factory
             'username' => $this->faker->unique()->userName,
             'email' => $this->faker->unique()->safeEmail,
             'balance' => $this->faker->randomFloat(2,0, 999),
-            'password' => static::$password ??= Hash::make('password'),
-            'role_id' => 1,
+            'password' => static::$password ??= Hash::make('Test123!'),
+            'role_id' => Role::inRandomOrder()->first()->id,
         ];
     }
 
-    public function developer()
+    public function developer(): static
     {
-        return $this->state(function (array $attributes) {
+        return $this->state(function () {
             return [
-                'role_id' => 2,
+                'role_id' => Role::where('title', 'developer')->first()->id,
+            ];
+        });
+    }
+
+
+    public function user(): static
+    {
+        return $this->state(function () {
+            return [
+                'role_id' => Role::where('title', 'user')->first()->id,
             ];
         });
     }

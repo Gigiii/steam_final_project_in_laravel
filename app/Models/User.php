@@ -63,11 +63,6 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Library::class);
     }
 
-    public function games()
-    {
-        return $this->hasManyThrough(Game::class, Library::class);
-    }
-
     public function wishlist()
     {
         return $this->hasMany(Wishlist::class);
@@ -96,7 +91,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function isDeveloper()
     {
-        return $this->role->title === 'developer' && $this->developer !== null;
+        return $this->role->title === 'developer' && $this->developer->exists();
     }
 
     public function role()

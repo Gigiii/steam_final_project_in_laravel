@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RefreshTokenRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +17,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class JWTAuthController extends Controller
 {
-    // User registration
+
     public function register(RegisterRequest $request)
     {
         $validated = $request->validated();
@@ -36,7 +37,6 @@ class JWTAuthController extends Controller
         ]);
     }
 
-    // User login
     public function login(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
@@ -62,7 +62,6 @@ class JWTAuthController extends Controller
         }
     }
 
-    // Get authenticated user
     public function getUser()
     {
 
@@ -73,7 +72,7 @@ class JWTAuthController extends Controller
             Log::error('JWT Error: ', ['error' => $e->getMessage()]);
             return response()->json(['error' => 'Invalid token'], 400);
         }
-        return response()->json(compact('user'));
+        return new UserResource($user);
     }
 
     public function refresh(RefreshTokenRequest $request)
@@ -87,7 +86,6 @@ class JWTAuthController extends Controller
         }
     }
 
-    // User logout
     public function logout()
     {
         JWTAuth::invalidate(JWTAuth::getToken());

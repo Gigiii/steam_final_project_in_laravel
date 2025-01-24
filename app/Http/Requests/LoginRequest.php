@@ -27,6 +27,13 @@ class LoginRequest extends FormRequest
         ];
     }
 
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'email' => strtolower(trim($this->email)),
+        ]);
+    }
+
     public function messages()
     {
         return [
